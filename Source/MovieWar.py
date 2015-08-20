@@ -180,7 +180,7 @@ def main():
         errln('The number of rounds must be positive.')
         sys.exit(1)
 
-    game = MovieWar(options.players, roundlimit)
+    game = MovieWar(player_names, roundlimit)
 
 
 if __name__ == '__main__':
