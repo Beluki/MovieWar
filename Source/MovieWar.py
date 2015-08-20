@@ -22,6 +22,51 @@ def errln(line):
     print('MovieWar.py: error:', line, file = sys.stderr, flush = True)
 
 
+# Utils:
+
+def rotate_left(iterable):
+    """
+    Shift an iterable to the left, in-place.
+    e.g. [1, 2, 3, 4] -> [2, 3, 4, 1]
+    """
+    size = len(iterable)
+
+    for i in range(size - 1):
+        iterable[i], iterable[i + 1] = iterable[i + 1], iterable[i]
+
+    return iterable
+
+
+def is_valid_year(string):
+    """
+    Try to parse a string as a 4 digit year
+    and return a boolean indicating success or failure.
+    """
+    year = string.strip()
+
+    if not len(year) == 4:
+        return False
+
+    try:
+        number = int(year)
+        return True
+
+    except ValueError:
+        return False
+
+    return False
+
+
+# Player representation:
+
+class Player(object):
+
+    def __init__(self, name):
+        self.name = name
+        self.score = 0
+
+
+
 # Entry point:
 
 def main():
