@@ -176,7 +176,7 @@ def main():
         errln('The maximum number of players is 5.')
         sys.exit(1)
 
-    if roundlimit < 0:
+    if roundlimit < 1:
         errln('The number of rounds must be positive.')
         sys.exit(1)
 
