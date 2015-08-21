@@ -3,5 +3,8 @@ CHANGELOG
 
 * 2015/08/21:
 
+    - Implemented '--favor older|newer|random' and '--favor-factor'
+      to be able to adjust difficulty.
+
     - First version.
 
