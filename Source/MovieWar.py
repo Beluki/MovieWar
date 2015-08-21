@@ -93,8 +93,6 @@ def is_valid_year(string):
     except ValueError:
         return False
 
-    return False
-
 
 # Player representation:
 
@@ -106,12 +104,12 @@ class Player(object):
 
         self.score = 0
         self.last_answer = 0
-        self.last_score = 0
+        self.last_answer_score = 0
 
     def reset(self):
         self.score = 0
         self.last_answer = 0
-        self.last_score = 0
+        self.last_answer_score = 0
 
 
 # Game representation:
@@ -152,46 +150,46 @@ class MovieWar(object):
                     player.last_answer = answer
                     break
 
-    def print_correct_answers(self, years):
+    def print_correct_answers(self, movie_years):
         """
         Print the correct year/s for a movie.
         """
         # a movie can have multiple valid answers
         # (same movie name, multiple releases):
-        if len(years) == 1:
-            answer = years[0]
+        if len(movie_years) == 1:
+            answer = movie_years[0]
             print(self.color + 'The correct answer was... {}.'.format(answer))
         else:
-            answers = ', '.join(map(str, years))
+            answers = ', '.join(map(str, movie_years))
             print(self.color + 'Valid answers were... {}.'.format(answers))
 
-    def rate_player_answers(self, years):
+    def score_player_answers(self, movie_years):
         """
         Rate each player answer for a given movie and store the score
-        in their ".last_score" attribute.
+        in their ".last_answer_score" attribute.
         """
         for player in self.players:
             player_year = int(player.last_answer)
             closest = float('inf')
 
-            for year in years:
+            for year in movie_years:
                 correct_year = int(year)
                 difference = abs(correct_year - player_year)
                 closest = min(closest, difference)
 
-            if difference == 0:
+            if closest == 0:
                 score = 50
             else:
-                score = 20 - difference
+                score = 20 - closest
 
             player.last_score = score
             player.score += score
 
             print(player.color + '{}: {:+} points.'.format(player.name, player.last_score))
 
-    def show_player_scores(self):
+    def print_player_scores(self):
         """
-        Print the player scores, sorted from higher to lower.
+        Show the player scores, sorted from higher to lower.
         """
         players = sorted(self.players, key = attrgetter('score'), reverse = True)
 
@@ -204,10 +202,6 @@ class MovieWar(object):
         """
         Show a message to see if the user/s want to play again.
         Returns the number of rounds to play.
-
-        An empty answer or "yes" plays again with the same number of rounds.
-        A number means "Yes" with a particular new round limit.
-        "No" closes the game.
         """
         print(self.color + 'Play again? (yes/no/number of rounds)')
 
@@ -237,39 +231,45 @@ class MovieWar(object):
         Start playing the game.
         """
         while True:
-            # game ended?
-            if self.round > self.roundlimit:
-                print(self.color)
-                self.show_player_scores()
-
-                print(self.color)
-                rounds = self.ask_to_play_again()
-
-                if rounds == 0:
-                    break
-                else:
-                    self.reset()
-                    self.roundlimit = rounds
 
             # pick movie:
             movie = random.choice(self.movies)
-            name = movie['name']
-            years = movie['years']
+            movie_name = movie['name']
+            movie_years = movie['years']
 
             # print question, ask for answers:
             print(self.color)
             print(self.color + 'Round {} of {}'.format(self.round, self.roundlimit))
-            print(self.color + 'In what year was "{}" released?'.format(name))
+            print(self.color + 'In what year was "{}" released?'.format(movie_name))
+
             self.get_player_answers()
 
             # show the correct answer and rate the player answers:
             print(self.color)
-            self.print_correct_answers(years)
-            self.rate_player_answers(years)
+            self.print_correct_answers(movie_years)
+            self.score_player_answers(movie_years)
 
-            # advance round and rotate players list so that on each one gets to go first:
-            self.round += 1
-            rotate_left(self.players)
+            # game ended?
+            if self.round == self.roundlimit:
+                print(self.color)
+                self.print_player_scores()
+
+                print(self.color)
+                rounds = self.ask_to_play_again()
+
+                # 0 rounds, end game exiting the while loop:
+                if rounds == 0:
+                    break
+
+                # play again:
+                else:
+                    self.reset()
+                    self.roundlimit = rounds
+
+            # advance round and rotate players list:
+            else:
+                self.round += 1
+                rotate_left(self.players)
 
 
 # Parser:
@@ -283,7 +283,7 @@ def make_parser():
     )
 
     # positional:
-    parser.add_argument('players',
+    parser.add_argument('player_names',
         help = 'player names',
         metavar = 'players',
         nargs = '+')
@@ -310,7 +310,7 @@ def main():
     parser = make_parser()
     options = parser.parse_args()
 
-    player_names = options.players
+    player_names = options.player_names
     roundlimit = options.roundlimit
     filepath = options.filepath
 
