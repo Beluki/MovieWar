@@ -7,10 +7,12 @@ A guess the movie release date trivia game with local multiplayer.
 """
 
 
+import json
 import random
 import sys
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from operator import attrgetter
 
 
 # Information and error messages:
@@ -49,7 +51,7 @@ ANSI_COLORS = {
 }
 
 PLAYER_COLORS = ['red', 'green', 'yellow', 'magenta', 'cyan']
-GAME_COLORS = ['white']
+GAME_COLOR = 'white'
 
 
 # No colorama support, just return an empty string:
@@ -101,40 +103,173 @@ class Player(object):
     def __init__(self, name, color):
         self.name = name
         self.color = color
-        self.score = 0
 
-    def reset_score(self):
         self.score = 0
+        self.last_answer = 0
+        self.last_score = 0
+
+    def reset(self):
+        self.score = 0
+        self.last_answer = 0
+        self.last_score = 0
 
 
 # Game representation:
 
 class MovieWar(object):
 
-    def __init__(self, player_names, roundlimit):
-        self.player_names = player_names
+    def __init__(self, players, movies, roundlimit):
+        self.players = players
+        self.movies = movies
         self.roundlimit = roundlimit
-        self.players = self.initialize_players()
 
-    def initialize_players(self):
+        self.color = ANSI_COLORS[GAME_COLOR]
+        self.round = 1
+
+    def reset(self):
         """
-        Create player instances with different color attributes
-        from our list of names.
+        Reset scores and setup internal state to play a new game.
         """
-        players = []
+        for player in self.players:
+            player.reset()
 
-        # first, shuffle the colors, so that each player
-        # gets a different one each time we play:
-        random.shuffle(PLAYER_COLORS)
+        self.round = 1
 
-        for index, name in enumerate(self.player_names):
-            ansi_color_name = PLAYER_COLORS[index]
-            color = ANSI_COLORS[ansi_color_name]
+    # playing:
 
-            player = Player(name, color)
-            players.append(player)
+    def get_player_answers(self):
+        """
+        Ask each player for an answer and store them
+        in their ".last_answer" attribute.
+        """
+        for player in self.players:
+            while True:
+                print(player.color + '{} ({} points)'.format(player.name, player.score))
 
-        return players
+                answer = input('> ')
+
+                if is_valid_year(answer):
+                    player.last_answer = answer
+                    break
+
+    def print_correct_answers(self, years):
+        """
+        Print the correct year/s for a movie.
+        """
+        # a movie can have multiple valid answers
+        # (same movie name, multiple releases):
+        if len(years) == 1:
+            answer = years[0]
+            print(self.color + 'The correct answer was... {}.'.format(answer))
+        else:
+            answers = ', '.join(map(str, years))
+            print(self.color + 'Valid answers were... {}.'.format(answers))
+
+    def rate_player_answers(self, years):
+        """
+        Rate each player answer for a given movie and store the score
+        in their ".last_score" attribute.
+        """
+        for player in self.players:
+            player_year = int(player.last_answer)
+            closest = float('inf')
+
+            for year in years:
+                correct_year = int(year)
+                difference = abs(correct_year - player_year)
+                closest = min(closest, difference)
+
+            if difference == 0:
+                score = 50
+            else:
+                score = 20 - difference
+
+            player.last_score = score
+            player.score += score
+
+            print(player.color + '{}: {:+} points.'.format(player.name, player.last_score))
+
+    def show_player_scores(self):
+        """
+        Print the player scores, sorted from higher to lower.
+        """
+        players = sorted(self.players, key = attrgetter('score'), reverse = True)
+
+        print(self.color + 'Final scores:')
+
+        for player in players:
+            print(player.color + '{}: {:+} points.'.format(player.name, player.score))
+
+    def ask_to_play_again(self):
+        """
+        Show a message to see if the user/s want to play again.
+        Returns the number of rounds to play.
+
+        An empty answer or "yes" plays again with the same number of rounds.
+        A number means "Yes" with a particular new round limit.
+        "No" closes the game.
+        """
+        print(self.color + 'Play again? (yes/no/number of rounds)')
+
+        while True:
+            result = input('> ')
+            result = result.strip().lower()
+
+            if result in ['yes', 'y', '']:
+                return self.roundlimit
+
+            if result in ['no', 'n']:
+                return 0
+
+            try:
+                roundlimit = int(result)
+
+                if roundlimit < 0:
+                    print(self.color + 'The number of rounds must be positive.')
+                else:
+                    return roundlimit
+
+            except ValueError:
+                pass
+
+    def play(self):
+        """
+        Start playing the game.
+        """
+        while True:
+            # game ended?
+            if self.round > self.roundlimit:
+                print(self.color)
+                self.show_player_scores()
+
+                print(self.color)
+                rounds = self.ask_to_play_again()
+
+                if rounds == 0:
+                    break
+                else:
+                    self.reset()
+                    self.roundlimit = rounds
+
+            # pick movie:
+            movie = random.choice(self.movies)
+            name = movie['name']
+            years = movie['years']
+
+            # print question, ask for answers:
+            print(self.color)
+            print(self.color + 'Round {} of {}'.format(self.round, self.roundlimit))
+            print(self.color + 'In what year was "{}" released?'.format(name))
+            self.get_player_answers()
+
+            # show the correct answer and rate the player answers:
+            print(self.color)
+            self.print_correct_answers(years)
+            self.rate_player_answers(years)
+
+            # advance round and rotate players list so that on each one gets to go first:
+            self.round += 1
+            rotate_left(self.players)
 
 
 # Parser:
@@ -154,11 +289,17 @@ def make_parser():
         nargs = '+')
 
     # optional:
+    parser.add_argument('--filepath',
+        help = 'path to the file to use as a movie database (default: MovieWar.json)',
+        metavar = 'path',
+        type = str,
+        default = 'MovieWar.json')
+
     parser.add_argument('--roundlimit',
-        help = 'how many rounds to play (default: 5)',
+        help = 'how many rounds to play (default: 10)',
         metavar = 'limit',
         type = int,
-        default = 5)
+        default = 10)
 
     return parser
 
@@ -171,16 +312,43 @@ def main():
 
     player_names = options.players
     roundlimit = options.roundlimit
-
-    if len(player_names) > 5:
-        errln('The maximum number of players is 5.')
-        sys.exit(1)
+    filepath = options.filepath
 
     if roundlimit < 1:
         errln('The number of rounds must be positive.')
         sys.exit(1)
 
-    game = MovieWar(player_names, roundlimit)
+    # shuffle the colors, so that each player gets a different one
+    # each time we play regardless of command-line order:
+    random.shuffle(PLAYER_COLORS)
+
+    # initialize players:
+    players = []
+
+    for name in player_names:
+        ansi_color_name = PLAYER_COLORS[0]
+        color = ANSI_COLORS[ansi_color_name]
+        rotate_left(PLAYER_COLORS)
+
+        player = Player(name, color)
+        players.append(player)
+
+    # initialize movies:
+    movies = []
+
+    try:
+        with open(filepath, 'r', encoding = 'utf-8-sig') as descriptor:
+            for line in descriptor:
+                movie = json.loads(line)
+                movies.append(movie)
+
+    except Exception as e:
+        errln('Unable to read the movies file at: {}.'.format(filepath))
+        errln('Exception message: {}'.format(e))
+        sys.exit(1)
+
+    game = MovieWar(players, movies, roundlimit)
+    game.play()
 
 
 if __name__ == '__main__':
