@@ -324,7 +324,7 @@ def make_parser():
         default = 'random')
 
     parser.add_argument('--favor-factor',
-        help = 'how many movies to test when favoring older/newer titles',
+        help = 'how many movies to test when favoring titles (default 2)',
         metavar = 'factor',
         type = int,
         default = 2)
