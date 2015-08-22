@@ -1,6 +1,10 @@
 
 CHANGELOG
 
+* 2015/08/22:
+
+    - Changed '--favor' to use 'older|newer' only.
+
 * 2015/08/21:
 
     - Implemented '--favor older|newer|random' and '--favor-factor'

@@ -13,6 +13,7 @@ import sys
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from operator import attrgetter
+from urllib.parse import quote
 
 
 # Information and error messages:
@@ -37,6 +38,15 @@ try:
 
 except ImportError:
     HAVE_COLORAMA = False
+
+
+try:
+    import requests
+
+    HAVE_REQUESTS = True
+
+except ImportError:
+    HAVE_REQUESTS = False
 
 
 # ANSI escape sequences:
@@ -94,6 +104,23 @@ def is_valid_year(string):
         return False
 
 
+def search_omdb(title):
+    """
+    Find a movie using the OMDB API and return JSON data.
+    Can return multiple movies.
+
+    Format on success:
+    { 'Search': [{'Title': ..., 'Year': ...}, ...] }
+
+    Format on error:
+    { 'Error': 'message', 'Response': 'message' }
+    """
+    title = quote(title)
+    request = requests.get('http://www.omdbapi.com/?s={}'.format(title))
+
+    return request.json()
+
+
 # Player representation:
 
 class Player(object):
@@ -137,11 +164,11 @@ class MovieWar(object):
 
     # playing:
 
-    def pick_movie(self):
+    def pick_random_movie(self):
         """
         Choose a movie, according to our favor settings.
         """
-        if self.favor == 'random':
+        if self.favor is None:
             return random.choice(self.movies)
 
         movie = random.choice(self.movies)
@@ -161,6 +188,101 @@ class MovieWar(object):
                 movie, movie_oldest, movie_newest = test, test_oldest, test_newest
 
         return movie
+
+    def find_local_movie(self, name):
+        """
+        Try to find a movie by title in the movies database.
+        """
+        for movie in self.movies:
+            if movie['name'] == name:
+                return movie
+
+        return None
+
+    def find_omdb_movie(self, name):
+        """
+        Try to find a movie by title in OMDB.
+        """
+        try:
+            jsondata = search_omdb(name)
+
+            # no result:
+            if 'Error' in jsondata:
+                return None
+
+            # found at least one movie:
+            if 'Search' in jsondata:
+                years = []
+
+                for movie in jsondata['Search']:
+
+                    # validate used attributes in the OMDB JSON response:
+                    if not 'Type' in movie or not 'Title' in movie or not 'Year' in movie:
+                        errln('Invalid JSON result from OMDB.')
+                        continue
+
+                    # ignore stuff like games or tv shows:
+                    if not movie['Type'] == 'movie':
+                        continue
+
+                    title = movie['Title']
+                    year = movie['Year']
+
+                    # sometimes, OMDB returns additional data after the 4-digit year:
+                    year = year[:4]
+
+                    if not is_valid_year(year):
+                        errln('Invalid JSON result from OMDB, incorrect Year format.')
+                        continue
+
+                    # OMDB returns partial matches, e.g. "Full Contact" for "Contact"
+                    # check that it matches exactly:
+                    if title == name:
+
+                        # there have been instances of two movies with the same title
+                        # released on the same year:
+                        if not year in years:
+                            years.append(year)
+
+                # at least one movie?
+                if len(years) > 0:
+                    return { 'name': name, 'years': years }
+
+        # Connection error or JSON parsing error:
+        except Exception as e:
+            errln('Unable to get a result from OMDB.')
+            errln('Exception message: {}'.format(e))
+
+        return None
+
+    def pick_player_movie(self, player):
+        """
+        Ask the current player for a title and find the matching in
+        the movies database or in OMDB.
+        """
+        while True:
+            print(player.color + '{} ({} points) Next movie?'.format(player.name, player.score))
+
+            name = input('> ')
+            if name == '':
+                continue
+
+            # already known?
+            movie = self.find_local_movie(name)
+            if movie is not None:
+                return movie
+
+            # on OMDB?
+            if HAVE_REQUESTS:
+                movie = self.find_omdb_movie(name)
+
+                # add it to the local database:
+                if movie is not None:
+                    self.movies.append(movie)
+                    return movie
+
+            # unable to find it:
+            print(self.color + 'Movie not found.')
 
     def get_player_answers(self):
         """
@@ -209,10 +331,10 @@ class MovieWar(object):
             else:
                 score = 20 - closest
 
-            player.last_score = score
+            player.last_answer_score = score
             player.score += score
 
-            print(player.color + '{}: {:+} points.'.format(player.name, player.last_score))
+            print(player.color + '{}: {:+} points.'.format(player.name, player.last_answer_score))
 
     def print_player_scores(self):
         """
@@ -260,7 +382,8 @@ class MovieWar(object):
         while True:
 
             # pick movie:
-            movie = self.pick_movie()
+            # movie = self.pick_random_movie()
+            movie = self.pick_player_movie(self.players[0])
             movie_name = movie['name']
             movie_years = movie['years']
 
@@ -317,20 +440,19 @@ def make_parser():
 
     # optional:
     parser.add_argument('--favor',
-        help = 'pick older, newer or random movies (default: random)',
+        help = 'favor older or newer movies',
         metavar = 'mode',
         type = str,
-        choices = ['older', 'newer', 'random'],
-        default = 'random')
+        choices = ['older', 'newer'])
 
     parser.add_argument('--favor-factor',
-        help = 'how many movies to test when favoring titles (default 2)',
+        help = 'movies to test when favoring titles (default 2)',
         metavar = 'factor',
         type = int,
         default = 2)
 
     parser.add_argument('--filepath',
-        help = 'path to the JSON movie database (default: MovieWar.json)',
+        help = 'path to the movies file (default: MovieWar.json)',
         metavar = 'path',
         type = str,
         default = 'MovieWar.json')
