@@ -93,7 +93,7 @@ def is_valid_year(string):
     """
     year = string.strip()
 
-    if not len(year) == 4:
+    if len(year) != 4:
         return False
 
     try:
@@ -222,22 +222,24 @@ class MovieWar(object):
                         continue
 
                     # ignore stuff like games or tv shows:
-                    if not movie['Type'] == 'movie':
+                    if movie['Type'] != 'movie':
                         continue
 
                     title = movie['Title']
-                    year = movie['Year']
 
-                    # sometimes, OMDB returns additional data after the 4-digit year:
-                    year = year[:4]
+                    # OMDB returns partial matches (e.g. "Full Contact" for "Contact")
+                    # check that it matches, but allow different case:
+                    if title.lower() == name.lower():
 
-                    if not is_valid_year(year):
-                        errln('Invalid JSON result from OMDB, incorrect Year format.')
-                        continue
+                        # auto-correct the case, prefer OMDB:
+                        name = title
 
-                    # OMDB returns partial matches, e.g. "Full Contact" for "Contact"
-                    # check that it matches exactly:
-                    if title == name:
+                        # sometimes, OMDB returns additional data after the 4-digit year:
+                        year = movie['Year'][:4]
+
+                        if not is_valid_year(year):
+                            errln('Invalid JSON result from OMDB, incorrect Year format.')
+                            continue
 
                         # there have been instances of two movies with the same title
                         # released on the same year:
