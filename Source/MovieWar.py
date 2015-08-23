@@ -143,12 +143,12 @@ class Player(object):
 
 class MovieWar(object):
 
-    def __init__(self, players, movies, roundlimit, favor, favor_factor):
+    def __init__(self, players, movies, roundlimit, favor, favor_tests):
         self.players = players
         self.movies = movies
         self.roundlimit = roundlimit
         self.favor = favor
-        self.favor_factor = favor_factor
+        self.favor_tests = favor_tests
 
         self.color = ANSI_COLORS[GAME_COLOR]
         self.round = 1
@@ -175,8 +175,8 @@ class MovieWar(object):
         movie_oldest = min(movie['years'])
         movie_newest = max(movie['years'])
 
-        # pick as many movies as the favor factor and choose the oldest/newest:
-        for i in range(self.favor_factor):
+        # pick as many movies as favor tests and choose the oldest/newest:
+        for i in range(self.favor_tests):
             test = random.choice(self.movies)
             test_oldest = min(test['years'])
             test_newest = max(test['years'])
@@ -272,7 +272,7 @@ class MovieWar(object):
             if movie is not None:
                 return movie
 
-            # on OMDB?
+            # OMDB?
             if HAVE_REQUESTS:
                 movie = self.find_omdb_movie(name)
 
@@ -432,36 +432,48 @@ def make_parser():
         usage  = 'MovieWar.py [option [options ...]] player [player...]',
     )
 
-    # positional:
+    # required:
     parser.add_argument('player_names',
         help = 'player names',
         metavar = 'players',
         nargs = '+')
 
-    # optional:
-    parser.add_argument('--favor',
-        help = 'favor older or newer movies',
-        metavar = 'mode',
-        type = str,
-        choices = ['older', 'newer'])
+    # optional, game options:
+    game_options = parser.add_argument_group('Game options')
 
-    parser.add_argument('--favor-factor',
-        help = 'movies to test when favoring titles (default 2)',
-        metavar = 'factor',
-        type = int,
-        default = 2)
+    game_options.add_argument('--challenge',
+        help = 'play in challenge mode (players choose movies)',
+        action = 'store_true')
 
-    parser.add_argument('--filepath',
-        help = 'path to the movies file (default: MovieWar.json)',
-        metavar = 'path',
-        type = str,
-        default = 'MovieWar.json')
-
-    parser.add_argument('--roundlimit',
+    game_options.add_argument('--roundlimit',
         help = 'how many rounds to play (default: 10)',
         metavar = 'limit',
         type = int,
         default = 10)
+
+    # optional, favoring titles:
+    choosing_movies_options = parser.add_argument_group('Choosing movies options')
+
+    choosing_movies_options.add_argument('--favor',
+        help = 'favor older or newer titles when picking movies',
+        metavar = 'older|newer',
+        type = str,
+        choices = ['older', 'newer'])
+
+    choosing_movies_options.add_argument('--favor-tests',
+        help = 'movies to test when favoring titles (default: 2)',
+        metavar = 'number',
+        type = int,
+        default = 2)
+
+    # optional, movies file:
+    movies_file_options = parser.add_argument_group('Movies file options')
+
+    movies_file_options.add_argument('--filepath',
+        help = 'path to the movies file (default: MovieWar.json)',
+        metavar = 'path',
+        type = str,
+        default = 'MovieWar.json')
 
     return parser
 
@@ -473,17 +485,18 @@ def main():
     options = parser.parse_args()
 
     player_names = options.player_names
+    challenge = options.challenge
     roundlimit = options.roundlimit
     favor = options.favor
-    favor_factor = options.favor_factor
+    favor_tests = options.favor_tests
     filepath = options.filepath
 
     if roundlimit < 1:
         errln('The number of rounds must be positive.')
         sys.exit(1)
 
-    if favor_factor < 1:
-        errln('The favor factor must be positive.')
+    if favor_tests < 1:
+        errln('The number of favor tests must be positive.')
         sys.exit(1)
 
     # shuffle the colors, so that each player gets a different one
@@ -515,7 +528,7 @@ def main():
         errln('Exception message: {}'.format(e))
         sys.exit(1)
 
-    game = MovieWar(players, movies, roundlimit, favor, favor_factor)
+    game = MovieWar(players, movies, roundlimit, favor, favor_tests)
     game.play()
 
 
