@@ -64,7 +64,7 @@ PLAYER_COLORS = ['red', 'green', 'yellow', 'magenta', 'cyan']
 GAME_COLOR = 'white'
 
 
-# No colorama support, just return an empty string:
+# No colorama support, substitute all the color sequences by an empty string:
 
 if not HAVE_COLORAMA:
     for key, value in ANSI_COLORS.items():
@@ -121,6 +121,38 @@ def search_omdb(title):
     return request.json()
 
 
+def load_movies_file(filepath):
+    """
+    Parse the movies file and return a list of movies.
+    """
+    movies = []
+
+    with open(filepath, 'r', encoding = 'utf-8-sig') as descriptor:
+        for line in descriptor:
+            text = line.strip()
+
+            # ignore empty lines and comments:
+            if text == '' or text.startswith('#'):
+                continue
+
+            movie = json.loads(line)
+            movies.append(movie)
+
+    return movies
+
+
+def append_to_movies_file(filepath, movies):
+    """
+    Add new movies to the movies file, preserving the current contents.
+    """
+    with open(filepath, 'ab') as descriptor:
+        for movie in movies:
+            jsondata = json.dumps(movie).encode('utf-8')
+
+            descriptor.write(jsondata)
+            descriptor.write(b'\n')
+
+
 # Player representation:
 
 class Player(object):
@@ -131,12 +163,10 @@ class Player(object):
 
         self.score = 0
         self.last_answer = 0
-        self.last_answer_score = 0
 
     def reset(self):
         self.score = 0
         self.last_answer = 0
-        self.last_answer_score = 0
 
 
 # Game representation:
@@ -153,6 +183,8 @@ class MovieWar(object):
 
         self.color = ANSI_COLORS[GAME_COLOR]
         self.round = 1
+
+        self.new_movies = []
 
     def reset(self):
         """
@@ -264,6 +296,7 @@ class MovieWar(object):
         the movies database or in OMDB.
         """
         while True:
+            print(player.color)
             print(player.color + '{} ({} points) Next movie?'.format(player.name, player.score))
 
             name = input('> ')
@@ -279,9 +312,10 @@ class MovieWar(object):
             if HAVE_REQUESTS:
                 movie = self.find_omdb_movie(name)
 
-                # add it to the local database:
+                # add it to the local database and the list of new movies:
                 if movie is not None:
                     self.movies.append(movie)
+                    self.new_movies.append(movie)
                     return movie
 
             # unable to find it:
@@ -334,10 +368,8 @@ class MovieWar(object):
             else:
                 score = 20 - closest
 
-            player.last_answer_score = score
             player.score += score
-
-            print(player.color + '{}: {:+} points.'.format(player.name, player.last_answer_score))
+            print(player.color + '{}: {:+} points ({:+}).'.format(player.name, player.score, score))
 
     def print_player_scores(self):
         """
@@ -501,6 +533,7 @@ def main():
     favor_tests = options.favor_tests
     filepath = options.filepath
 
+    # validate options:
     if roundlimit < 1:
         errln('The number of rounds must be positive.')
         sys.exit(1)
@@ -528,24 +561,26 @@ def main():
     movies = []
 
     try:
-        with open(filepath, 'r', encoding = 'utf-8-sig') as descriptor:
-            for line in descriptor:
-                text = line.strip()
-
-                # ignore empty lines and comments:
-                if text == '' or text.startswith('#'):
-                    continue
-
-                movie = json.loads(line)
-                movies.append(movie)
+        movies = load_movies_file(filepath)
 
     except Exception as e:
         errln('Unable to read the movies file at: {}.'.format(filepath))
         errln('Exception message: {}'.format(e))
         sys.exit(1)
 
+    # play the game:
     game = MovieWar(players, movies, challenge, roundlimit, favor, favor_tests)
     game.play()
+
+    # save the new movies:
+    if len(game.new_movies) > 0:
+        try:
+            append_to_movies_file(filepath, game.new_movies)
+
+        except Exception as e:
+            errln('Unable to save the movies file at: {}'.format(filepath))
+            errln('Exception mesage: {}'.format(e))
+            sys.exit(1)
 
 
 if __name__ == '__main__':
