@@ -520,6 +520,12 @@ def main():
     try:
         with open(filepath, 'r', encoding = 'utf-8-sig') as descriptor:
             for line in descriptor:
+                text = line.strip()
+
+                # ignore empty lines and comments:
+                if text == '' or text.startswith('#'):
+                    continue
+
                 movie = json.loads(line)
                 movies.append(movie)
 
