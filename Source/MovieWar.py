@@ -143,9 +143,10 @@ class Player(object):
 
 class MovieWar(object):
 
-    def __init__(self, players, movies, roundlimit, favor, favor_tests):
+    def __init__(self, players, movies, challenge, roundlimit, favor, favor_tests):
         self.players = players
         self.movies = movies
+        self.challenge = challenge
         self.roundlimit = roundlimit
         self.favor = favor
         self.favor_tests = favor_tests
@@ -286,12 +287,12 @@ class MovieWar(object):
             # unable to find it:
             print(self.color + 'Movie not found.')
 
-    def get_player_answers(self):
+    def get_player_answers(self, players):
         """
         Ask each player for an answer and store them
         in their ".last_answer" attribute.
         """
-        for player in self.players:
+        for player in players:
             while True:
                 print(player.color + '{} ({} points)'.format(player.name, player.score))
 
@@ -314,12 +315,12 @@ class MovieWar(object):
             answers = ', '.join(map(str, movie_years))
             print(self.color + 'Valid answers were... {}.'.format(answers))
 
-    def score_player_answers(self, movie_years):
+    def score_player_answers(self, players, movie_years):
         """
         Rate each player answer for a given movie and store the score
         in their ".last_answer_score" attribute.
         """
-        for player in self.players:
+        for player in players:
             player_year = int(player.last_answer)
             closest = float('inf')
 
@@ -383,9 +384,16 @@ class MovieWar(object):
         """
         while True:
 
-            # pick movie:
-            # movie = self.pick_random_movie()
-            movie = self.pick_player_movie(self.players[0])
+            # on challenge mode, the first player asks, the rest answer:
+            if self.challenge:
+                movie = self.pick_player_movie(self.players[0])
+                players = self.players[1:]
+
+            # on normal mode, all the players answer a random movie:
+            else:
+                movie = self.pick_random_movie()
+                players = self.players
+
             movie_name = movie['name']
             movie_years = movie['years']
 
@@ -394,12 +402,12 @@ class MovieWar(object):
             print(self.color + 'Round {} of {}'.format(self.round, self.roundlimit))
             print(self.color + 'In what year was "{}" released?'.format(movie_name))
 
-            self.get_player_answers()
+            self.get_player_answers(players)
 
             # show the correct answer and rate the player answers:
             print(self.color)
             self.print_correct_answers(movie_years)
-            self.score_player_answers(movie_years)
+            self.score_player_answers(players, movie_years)
 
             # game ended?
             if self.round == self.roundlimit:
@@ -536,7 +544,7 @@ def main():
         errln('Exception message: {}'.format(e))
         sys.exit(1)
 
-    game = MovieWar(players, movies, roundlimit, favor, favor_tests)
+    game = MovieWar(players, movies, challenge, roundlimit, favor, favor_tests)
     game.play()
 
 
