@@ -1,6 +1,19 @@
 
 CHANGELOG
 
+* 2015/08/23:
+
+    - Added '--challenge' mode.
+
+    - Argument parsing options are now organized into groups.
+
+    - Added automatic OMDB searching in '--challenge' mode
+      and auto-saving to the movies database.
+
+    - Added '--no-omdb-search' and '--no-auto-update'.
+
+    - The requests library is no longer needed. MovieWar uses urllib instead.
+
 * 2015/08/22:
 
     - Changed '--favor' to use 'older|newer' only.

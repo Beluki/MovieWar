@@ -14,6 +14,7 @@ import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from operator import attrgetter
 from urllib.parse import quote
+from urllib.request import urlopen
 
 
 # Information and error messages:
@@ -38,15 +39,6 @@ try:
 
 except ImportError:
     HAVE_COLORAMA = False
-
-
-try:
-    import requests
-
-    HAVE_REQUESTS = True
-
-except ImportError:
-    HAVE_REQUESTS = False
 
 
 # ANSI escape sequences:
@@ -116,9 +108,10 @@ def search_omdb(title):
     { 'Error': 'message', 'Response': 'message' }
     """
     title = quote(title)
-    request = requests.get('http://www.omdbapi.com/?s={}'.format(title))
+    response = urlopen('http://www.omdbapi.com/?s={}'.format(title))
+    data = response.read().decode('utf-8')
 
-    return request.json()
+    return json.loads(data)
 
 
 def load_movies_file(filepath):
@@ -173,10 +166,11 @@ class Player(object):
 
 class MovieWar(object):
 
-    def __init__(self, players, movies, challenge, roundlimit, favor, favor_tests):
+    def __init__(self, players, movies, challenge, no_omdb_search, roundlimit, favor, favor_tests):
         self.players = players
         self.movies = movies
         self.challenge = challenge
+        self.no_omdb_search = no_omdb_search
         self.roundlimit = roundlimit
         self.favor = favor
         self.favor_tests = favor_tests
@@ -227,7 +221,7 @@ class MovieWar(object):
         Try to find a movie by title in the movies database.
         """
         for movie in self.movies:
-            if movie['name'] == name:
+            if movie['name'].lower() == name.lower():
                 return movie
 
         return None
@@ -306,14 +300,16 @@ class MovieWar(object):
             # already known?
             movie = self.find_local_movie(name)
             if movie is not None:
+                print(self.color + 'Found (local database).')
                 return movie
 
             # OMDB?
-            if HAVE_REQUESTS:
+            if not self.no_omdb_search:
                 movie = self.find_omdb_movie(name)
 
                 # add it to the local database and the list of new movies:
                 if movie is not None:
+                    print(self.color + 'Found (omdb search).')
                     self.movies.append(movie)
                     self.new_movies.append(movie)
                     return movie
@@ -416,12 +412,12 @@ class MovieWar(object):
         """
         while True:
 
-            # on challenge mode, the first player asks, the rest answer:
+            # in challenge mode, the first player asks, the rest answer:
             if self.challenge:
                 movie = self.pick_player_movie(self.players[0])
                 players = self.players[1:]
 
-            # on normal mode, all the players answer a random movie:
+            # in normal mode, all the players answer a random movie:
             else:
                 movie = self.pick_random_movie()
                 players = self.players
@@ -487,6 +483,10 @@ def make_parser():
         help = 'play in challenge mode (players choose movies)',
         action = 'store_true')
 
+    game_options.add_argument('--no-omdb-search',
+        help = 'do not search OMDB in challenge mode',
+        action = 'store_true')
+
     game_options.add_argument('--roundlimit',
         help = 'how many rounds to play (default: 10)',
         metavar = 'limit',
@@ -511,6 +511,10 @@ def make_parser():
     # optional, movies file:
     movies_file_options = parser.add_argument_group('Movies file options')
 
+    movies_file_options.add_argument('--no-auto-update',
+        help = 'do not add new movies from OMDB to the movies file',
+        action = 'store_true')
+
     movies_file_options.add_argument('--filepath',
         help = 'path to the movies file (default: MovieWar.json)',
         metavar = 'path',
@@ -528,9 +532,11 @@ def main():
 
     player_names = options.player_names
     challenge = options.challenge
+    no_omdb_search = options.no_omdb_search
     roundlimit = options.roundlimit
     favor = options.favor
     favor_tests = options.favor_tests
+    no_auto_update = options.no_auto_update
     filepath = options.filepath
 
     # validate options:
@@ -569,11 +575,11 @@ def main():
         sys.exit(1)
 
     # play the game:
-    game = MovieWar(players, movies, challenge, roundlimit, favor, favor_tests)
+    game = MovieWar(players, movies, challenge, no_omdb_search, roundlimit, favor, favor_tests)
     game.play()
 
     # save the new movies:
-    if len(game.new_movies) > 0:
+    if not no_auto_update and len(game.new_movies) > 0:
         try:
             append_to_movies_file(filepath, game.new_movies)
 
