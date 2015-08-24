@@ -1,6 +1,11 @@
 
 CHANGELOG
 
+* 2015/08/24:
+
+    - Added local and OMDB suggestions in challenge mode when the
+      exact title doesn't match a known movie.
+
 * 2015/08/23:
 
     - Added '--challenge' mode.

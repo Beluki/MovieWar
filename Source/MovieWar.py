@@ -29,18 +29,6 @@ def errln(line):
     print('MovieWar.py: error:', line, file = sys.stderr, flush = True)
 
 
-# Non-builtin imports:
-
-try:
-    import colorama
-    colorama.init(autoreset = True)
-
-    HAVE_COLORAMA = True
-
-except ImportError:
-    HAVE_COLORAMA = False
-
-
 # ANSI escape sequences:
 
 ANSI_COLORS = {
@@ -56,11 +44,15 @@ PLAYER_COLORS = ['red', 'green', 'yellow', 'magenta', 'cyan']
 GAME_COLOR = 'white'
 
 
-# No colorama support, substitute all the color sequences by an empty string:
+# Colorama support:
 
-if not HAVE_COLORAMA:
-    for key, value in ANSI_COLORS.items():
-        ANSI_COLORS[key] = ''
+try:
+    import colorama
+    colorama.init(autoreset = True)
+
+except ImportError:
+    # no colorama, substitute all the color sequences by an empty string:
+    ANSI_COLORS = { key: '' for key in ANSI_COLORS.keys() }
 
 
 # Utils:
@@ -96,7 +88,7 @@ def is_valid_year(string):
         return False
 
 
-def search_omdb(title):
+def omdb_search(title):
     """
     Find a movie using the OMDB API and return JSON data.
     Can return multiple movies.
@@ -136,12 +128,11 @@ def load_movies_file(filepath):
 
 def append_to_movies_file(filepath, movies):
     """
-    Add new movies to the movies file, preserving the current contents.
+    Add new movies to the movies file, preserving the current content.
     """
     with open(filepath, 'ab') as descriptor:
         for movie in movies:
             jsondata = json.dumps(movie).encode('utf-8')
-
             descriptor.write(jsondata)
             descriptor.write(b'\n')
 
@@ -198,49 +189,63 @@ class MovieWar(object):
         if self.favor is None:
             return random.choice(self.movies)
 
-        movie = random.choice(self.movies)
-        movie_oldest = min(movie['years'])
-        movie_newest = max(movie['years'])
+        # pick one random movie:
+        result = random.choice(self.movies)
+        result_oldest = min(result['years'])
+        result_newest = max(result['years'])
 
-        # pick as many movies as favor tests and choose the oldest/newest:
+        # pick as many candidate movies as favor tests and choose the oldest/newest:
         for i in range(self.favor_tests):
-            test = random.choice(self.movies)
-            test_oldest = min(test['years'])
-            test_newest = max(test['years'])
+            movie = random.choice(self.movies)
+            movie_oldest = min(movie['years'])
+            movie_newest = max(movie['years'])
 
-            if self.favor == 'older' and test_oldest < movie_oldest:
-                movie, movie_oldest, movie_newest = test, test_oldest, test_newest
+            if self.favor == 'older' and movie_oldest < result_oldest:
+                result, result_oldest, result_newest = movie, movie_oldest, movie_newest
 
-            if self.favor == 'newer' and test_newest > movie_newest:
-                movie, movie_oldest, movie_newest = test, test_oldest, test_newest
+            if self.favor == 'newer' and movie_newest > result_newest:
+                result, result_oldest, result_newest = movie, movie_oldest, movie_newest
 
-        return movie
+        return result
 
     def find_local_movie(self, name):
         """
-        Try to find a movie by title in the movies database.
-        """
-        for movie in self.movies:
-            if movie['name'].lower() == name.lower():
-                return movie
+        Try to find a movie by name in the movies database.
 
-        return None
+        Returns (match, suggestions):
+            - match is the corresponding movie when there is an exact match by name, or None.
+            - suggestions is a set of additional movie titles that contain the name.
+        """
+        match = None
+        suggestions = set()
+
+        for movie in self.movies:
+            # exact match:
+            if name.lower() == movie['name'].lower():
+                match = movie
+
+            # suggestion:
+            if name.lower() in movie['name'].lower():
+                suggestions.add(movie['name'])
+
+        return match, suggestions
 
     def find_omdb_movie(self, name):
         """
-        Try to find a movie by title in OMDB.
-        """
-        try:
-            jsondata = search_omdb(name)
+        Try to find a movie by name in OMDB.
 
-            # no result:
-            if 'Error' in jsondata:
-                return None
+        Returns (match, suggestions):
+            - match is the corresponding movie when there is an exact match by name, or None.
+            - suggestions is a set of additional movie titles that contain the name.
+        """
+        match = None
+        suggestions = set()
+
+        try:
+            jsondata = omdb_search(name)
 
             # found at least one movie:
             if 'Search' in jsondata:
-                years = []
-
                 for movie in jsondata['Search']:
 
                     # validate used attributes in the OMDB JSON response:
@@ -252,37 +257,30 @@ class MovieWar(object):
                     if movie['Type'] != 'movie':
                         continue
 
-                    title = movie['Title']
+                    omdb_name = movie['Title']
+                    omdb_year = movie['Year'][:4]
 
-                    # OMDB returns partial matches (e.g. "Full Contact" for "Contact")
-                    # check that it matches, but allow different case:
-                    if title.lower() == name.lower():
+                    if not is_valid_year(omdb_year):
+                        errln('Invalid JSON result from OMDB, incorrect Year format.')
+                        continue
 
-                        # auto-correct the case, prefer OMDB:
-                        name = title
+                    # exact match?
+                    if name.lower() == omdb_name.lower():
+                        if match is not None:
+                            match['years'].append(omdb_year)
+                        else:
+                            match = { 'name': omdb_name, 'years': [omdb_year] }
 
-                        # sometimes, OMDB returns additional data after the 4-digit year:
-                        year = movie['Year'][:4]
-
-                        if not is_valid_year(year):
-                            errln('Invalid JSON result from OMDB, incorrect Year format.')
-                            continue
-
-                        # there have been instances of two movies with the same title
-                        # released on the same year:
-                        if not year in years:
-                            years.append(year)
-
-                # at least one movie?
-                if len(years) > 0:
-                    return { 'name': name, 'years': years }
+                    # add the OMDB result as a suggestion:
+                    suggestions.add(omdb_name)
 
         # Connection error or JSON parsing error:
         except Exception as e:
             errln('Unable to get a result from OMDB.')
             errln('Exception message: {}'.format(e))
 
-        return None
+        # return the match and the suggestions:
+        return match, suggestions
 
     def pick_player_movie(self, player):
         """
@@ -297,25 +295,36 @@ class MovieWar(object):
             if name == '':
                 continue
 
-            # already known?
-            movie = self.find_local_movie(name)
-            if movie is not None:
+            # local?
+            local_match, suggestions = self.find_local_movie(name)
+
+            if local_match is not None:
                 print(self.color + 'Found (local database).')
-                return movie
+                return local_match
 
             # OMDB?
             if not self.no_omdb_search:
-                movie = self.find_omdb_movie(name)
+                omdb_match, omdb_suggestions = self.find_omdb_movie(name)
 
                 # add it to the local database and the list of new movies:
-                if movie is not None:
+                if omdb_match is not None:
                     print(self.color + 'Found (omdb search).')
-                    self.movies.append(movie)
-                    self.new_movies.append(movie)
-                    return movie
+                    self.movies.append(omdb_match)
+                    self.new_movies.append(omdb_match)
+                    return omdb_match
 
-            # unable to find it:
+                # add the suggestions to the local ones:
+                suggestions = suggestions | omdb_suggestions
+
             print(self.color + 'Movie not found.')
+
+            # print available suggestions:
+            if len(suggestions) > 0:
+                print(self.color)
+                print(self.color + 'Similar movie names:')
+
+                for name in sorted(suggestions):
+                    print(self.color + name)
 
     def get_player_answers(self, players):
         """
