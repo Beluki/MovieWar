@@ -220,13 +220,14 @@ class MovieWar(object):
         suggestions = set()
 
         for movie in self.movies:
-            # exact match:
-            if name.lower() == movie['name'].lower():
-                match = movie
 
-            # suggestion:
+            # at least a suggestion?
             if name.lower() in movie['name'].lower():
                 suggestions.add(movie['name'])
+
+                # also an exact match?
+                if name.lower() == movie['name'].lower():
+                    match = movie
 
         return match, suggestions
 
@@ -264,6 +265,9 @@ class MovieWar(object):
                         errln('Invalid JSON result from OMDB, incorrect Year format.')
                         continue
 
+                    # all the OMDB results are considered suggestions:
+                    suggestions.add(omdb_name)
+
                     # exact match?
                     if name.lower() == omdb_name.lower():
                         if match is not None:
@@ -271,10 +275,7 @@ class MovieWar(object):
                         else:
                             match = { 'name': omdb_name, 'years': [omdb_year] }
 
-                    # add the OMDB result as a suggestion:
-                    suggestions.add(omdb_name)
-
-        # Connection error or JSON parsing error:
+        # connection error or JSON parsing error:
         except Exception as e:
             errln('Unable to get a result from OMDB.')
             errln('Exception message: {}'.format(e))
@@ -288,11 +289,12 @@ class MovieWar(object):
         the movies database or in OMDB.
         """
         while True:
-            print(player.color)
-            print(player.color + '{} ({} points) Next movie?'.format(player.name, player.score))
+            print(self.color)
+            print(self.color + 'Next movie?')
+            print(player.color + '{} ({} points)'.format(player.name, player.score))
 
             name = input('> ')
-            if name == '':
+            if name.strip() == '':
                 continue
 
             # local?
@@ -356,8 +358,8 @@ class MovieWar(object):
 
     def score_player_answers(self, players, movie_years):
         """
-        Rate each player answer for a given movie and store the score
-        in their ".last_answer_score" attribute.
+        Rate each player answer for a given movie and add the result
+        to their ".score" attribute.
         """
         for player in players:
             player_year = int(player.last_answer)
@@ -374,7 +376,7 @@ class MovieWar(object):
                 score = 20 - closest
 
             player.score += score
-            print(player.color + '{}: {:+} points ({:+}).'.format(player.name, player.score, score))
+            print(player.color + '{}: {} points ({:+}).'.format(player.name, player.score, score))
 
     def print_player_scores(self):
         """
@@ -385,7 +387,7 @@ class MovieWar(object):
         print(self.color + 'Final scores:')
 
         for player in players:
-            print(player.color + '{}: {:+} points.'.format(player.name, player.score))
+            print(player.color + '{}: {} points.'.format(player.name, player.score))
 
     def ask_to_play_again(self):
         """
