@@ -14,7 +14,7 @@ Interesting features:
 * More than 7600 movies in the included database.
 * Two game modes: random movies or each player chooses a movie for the rest to guess.
 * Automatically uses [OMDB][] to find unknown movies and updates the database with them.
-* Optional color support, using [Colorama][].
+* Optional color support, using [Colorama][]. No other dependencies outside the Python stdlib.
 
 [Colorama]: https://pypi.python.org/pypi/colorama
 [OMDB]: http://www.omdbapi.com
@@ -24,7 +24,7 @@ Interesting features:
 To play just run the script with the player names as arguments:
 
 ```bash
-MovieWar.py Player1 Player2 Player3...
+$ MovieWar.py Player1 Player2 Player3...
 ```
 
 The following options that can be used to change the behavior:
@@ -35,7 +35,7 @@ The following options that can be used to change the behavior:
   titles when a movie can't be found (either in the local database or in OMDB).
 
 * `--no-omdb-search` disables OMDB searching. Useful if the OMDB API is slow right now
-  or on computers with no network connection.
+  and on computers with no network connection.
 
 * `--roundlimit limit` sets the number of rounds a game will last. The default is 10 rounds.
 
@@ -49,14 +49,14 @@ The following options that can be used to change the behavior:
 * `--no-auto-update` does not add new movies to the database when searching OMDB.
 
 * `--filepath path` sets the current movies database to use. Useful if you want to have a
-  different file for say... cartoons.
+  different file for say... animation and cartoons.
 
 ## Scoring
 
-An exact guess is 50 points.
+An exact guess is worth 50 points.
 
 An error is (20 points - distance to the movie release year). For example, if you guess
-1990 and the release date is 5 years apart, you get 15 points.
+1990 and the correct release date is 5 years apart, you get 15 points.
 
 Note that it's possible to have a negative score.
 
