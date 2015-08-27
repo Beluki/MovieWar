@@ -6,7 +6,7 @@ but players guess movie release dates.
 
 Here is a screenshot:
 
-![Screenshot](https://raw.github.com/Beluki/MovieWar/master/Screenshot/Screenshot.png)
+![Screenshot](https://raw.github.com/Beluki/MovieWar/master/Screenshot/screenshot.png)
 
 ## Status
 
