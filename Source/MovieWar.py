@@ -3,7 +3,7 @@
 
 """
 MovieWar.
-A guess the movie release date trivia game with local multiplayer.
+A terminal trivia game. Guess movie release dates. Includes local multiplayer.
 """
 
 
