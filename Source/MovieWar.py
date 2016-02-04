@@ -285,6 +285,23 @@ class Player(object):
         self.last_answer = 0
 
 
+# Colored printing:
+
+def print_color(color, message = ''):
+    """
+    Print a message to stdout, possibly in color.
+    When the message is empty, print a newline.
+
+    When color is an ansi code: use it for coloring.
+    When color is an empty string: behave like the regular print().
+    Auto-reset color back to default after printing.
+    """
+    if color == '':
+        print(message, flush = True)
+    else:
+        print('\033[1;' + color + message + '\033[0m', flush = True)
+
+
 # Game representation:
 
 class MovieWar(object):
@@ -317,9 +334,9 @@ class MovieWar(object):
         in the local movies database or in OMDB.
         """
         while True:
-            print(self.color)
-            print(self.color + 'Next movie?')
-            print(player.color + '{} ({} points)'.format(player.name, player.score))
+            print_color(self.color)
+            print_color(self.color, 'Next movie?')
+            print_color(player.color, '{} ({} points)'.format(player.name, player.score))
 
             name = input('> ')
             if name.strip() == '':
@@ -330,9 +347,9 @@ class MovieWar(object):
             # exact match:
             if match is not None:
                 if not from_omdb:
-                    print(self.color + 'Found (local database).')
+                    print_color(self.color, 'Found (local database).')
                 else:
-                    print(self.color + 'Found (omdb search).')
+                    print_color(self.color, 'Found (omdb search).')
 
                     # add it to the local database (cache) and the new movies list:
                     self.movies.append(match)
@@ -341,16 +358,16 @@ class MovieWar(object):
                 return match
 
             # no match:
-            print(self.color + 'Movie not found.')
+            print_color(self.color, 'Movie not found.')
 
             # maybe there are suggestions
             # print them:
             if len(suggestions) > 0:
-                print(self.color)
-                print(self.color + 'Similar movie names:')
+                print_color(self.color)
+                print_color(self.color, 'Similar movie names:')
 
                 for name in sorted(suggestions):
-                    print(self.color + name)
+                    print_color(self.color, name)
 
     def get_player_answers(self, players):
         """
@@ -359,7 +376,7 @@ class MovieWar(object):
         """
         for player in players:
             while True:
-                print(player.color + '{} ({} points)'.format(player.name, player.score))
+                print_color(player.color, '{} ({} points)'.format(player.name, player.score))
 
                 answer = input('> ')
                 if answer.strip() == '':
@@ -377,10 +394,10 @@ class MovieWar(object):
         # (same movie name, multiple releases):
         if len(movie_years) == 1:
             answer = movie_years[0]
-            print(self.color + 'The correct answer was... {}.'.format(answer))
+            print_color(self.color, 'The correct answer was... {}.'.format(answer))
         else:
             answers = ', '.join(map(str, movie_years))
-            print(self.color + 'Correct answers were... {}.'.format(answers))
+            print_color(self.color, 'Correct answers were... {}.'.format(answers))
 
     def score_player_answers(self, players, movie_years):
         """
@@ -402,25 +419,23 @@ class MovieWar(object):
                 score = 20 - closest
 
             player.score += score
-            print(player.color + '{}: {} points ({:+}).'.format(player.name, player.score, score))
+            print_color(player.color, '{}: {} points ({:+}).'.format(player.name, player.score, score))
 
     def print_player_scores(self):
         """
         Show the player scores, sorted from higher to lower.
         """
-        players = sorted(self.players, key = attrgetter('score'), reverse = True)
+        print_color(self.color, 'Final scores:')
 
-        print(self.color + 'Final scores:')
-
-        for player in players:
-            print(player.color + '{}: {} points.'.format(player.name, player.score))
+        for player in sorted(self.players, key = attrgetter('score'), reverse = True):
+            print_color(player.color, '{}: {} points.'.format(player.name, player.score))
 
     def ask_to_play_again(self):
         """
         Show a message to see if the user/s want to play again.
         Returns the number of rounds to play.
         """
-        print(self.color + 'Play again? (yes/no/number of rounds)')
+        print_color(self.color, 'Play again? (yes/no/number of rounds)')
 
         while True:
             answer = input('> ')
@@ -436,7 +451,7 @@ class MovieWar(object):
                 roundlimit = int(answer)
 
                 if roundlimit < 0:
-                    print(self.color + 'The number of rounds must be positive.')
+                    print_color(self.color, 'The number of rounds must be positive.')
                 else:
                     return roundlimit
 
@@ -463,14 +478,14 @@ class MovieWar(object):
             movie_years = movie['years']
 
             # print question, ask for answers:
-            print(self.color)
-            print(self.color + 'Round {} of {}'.format(self.round, self.roundlimit))
-            print(self.color + 'In what year was "{}" released?'.format(movie_name))
+            print_color(self.color)
+            print_color(self.color, 'Round {} of {}'.format(self.round, self.roundlimit))
+            print_color(self.color, 'In what year was "{}" released?'.format(movie_name))
 
             self.get_player_answers(players)
 
             # show the correct answer and rate the player answers:
-            print(self.color)
+            print_color(self.color)
             self.print_correct_answers(movie_years)
             self.score_player_answers(players, movie_years)
 
@@ -478,11 +493,11 @@ class MovieWar(object):
             if self.round == self.roundlimit:
 
                 # show scores:
-                print(self.color)
+                print_color(self.color)
                 self.print_player_scores()
 
                 # another match?
-                print(self.color)
+                print_color(self.color)
                 rounds = self.ask_to_play_again()
 
                 if rounds == 0:
@@ -602,10 +617,10 @@ def main():
 
     if enable_colors:
         # red, green, yellow, magenta, cyan:
-        player_colors = ['\033[1;31m', '\033[1;32m', '\033[1;33m', '\033[1;35m', '\033[1;36m']
+        player_colors = ['31m', '32m', '33m', '35m', '36m']
 
         # white:
-        game_color = '\033[1;37m'
+        game_color = '37m'
 
         # shuffle the colors, so that each player gets a different one each time:
         random.shuffle(player_colors)
