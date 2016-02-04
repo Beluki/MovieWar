@@ -129,9 +129,11 @@ def find_random_movie(movies, favor, favor_tests):
 
         if favor == 'older' and test_oldest < movie_oldest:
             movie, movie_oldest, movie_newest = test, test_oldest, test_newest
+            continue
 
         if favor == 'newer' and test_newest > movie_newest:
             movie, movie_oldest, movie_newest = test, test_oldest, test_newest
+            continue
 
     return movie
 
@@ -173,7 +175,7 @@ def omdb_search(title):
     { 'Error': 'message', 'Response': 'message' }
     """
     title = quote(title)
-    response = urlopen('http://www.omdbapi.com/?s={}'.format(title))
+    response = urlopen('https://www.omdbapi.com/?s={}&type=movie'.format(title))
     data = response.read().decode('utf-8')
 
     return json.loads(data)
@@ -185,7 +187,7 @@ def find_omdb_movie(name):
 
     Returns (match, suggestions):
         - match is the corresponding movie when there is an exact match by name, or None.
-        - suggestions is a set of additional movie titles that contain the name.
+        - suggestions is a set of additional movie titles that OMDB returns from the search.
     """
     match = None
     suggestions = set()
@@ -206,6 +208,7 @@ def find_omdb_movie(name):
                 continue
 
             # ignore stuff like games or tv shows:
+            # (should never happen due to &type=movie but let's play safe)
             if movie['Type'] != 'movie':
                 continue
 
@@ -310,8 +313,8 @@ class MovieWar(object):
 
     def pick_player_movie(self, player):
         """
-        Ask the current player for a title and find the matching in
-        the movies database or in OMDB.
+        Ask the current player for a title and find a matching one
+        in the local movies database or in OMDB.
         """
         while True:
             print(self.color)
@@ -322,14 +325,14 @@ class MovieWar(object):
             if name.strip() == '':
                 continue
 
-            match, suggestions, omdb = find_movie(self.movies, name, self.omdb_search)
+            match, suggestions, from_omdb = find_movie(self.movies, name, self.omdb_search)
 
             # exact match:
             if match is not None:
-                if not omdb:
-                    print(self.color + 'Found (local database)')
+                if not from_omdb:
+                    print(self.color + 'Found (local database).')
                 else:
-                    print(self.color + 'Found (omdb search)')
+                    print(self.color + 'Found (omdb search).')
 
                     # add it to the local database (cache) and the new movies list:
                     self.movies.append(match)
@@ -337,9 +340,10 @@ class MovieWar(object):
 
                 return match
 
-            # no match but maybe there are suggestions:
+            # no match:
             print(self.color + 'Movie not found.')
 
+            # maybe there are suggestions
             # print them:
             if len(suggestions) > 0:
                 print(self.color)
@@ -376,7 +380,7 @@ class MovieWar(object):
             print(self.color + 'The correct answer was... {}.'.format(answer))
         else:
             answers = ', '.join(map(str, movie_years))
-            print(self.color + 'Valid answers were... {}.'.format(answers))
+            print(self.color + 'Correct answers were... {}.'.format(answers))
 
     def score_player_answers(self, players, movie_years):
         """
@@ -480,6 +484,7 @@ class MovieWar(object):
                 # another match?
                 print(self.color)
                 rounds = self.ask_to_play_again()
+
                 if rounds == 0:
                     return
                 else:
@@ -629,15 +634,17 @@ def main():
     game.play()
 
     # save the new movies:
-    if len(game.new_movies) > 0:
-        if not options.no_auto_update:
-            try:
-                append_to_movies_file(options.filepath, game.new_movies)
+    if not options.no_auto_update and len(game.new_movies) > 0:
+        try:
+            append_to_movies_file(options.filepath, game.new_movies)
 
-            except Exception as err:
-                errln('Unable to save the movies file at: {}'.format(options.filepath))
-                errln('Exception mesage: {}'.format(err))
-                sys.exit(1)
+        except Exception as err:
+            errln('Unable to save the movies file at: {}'.format(options.filepath))
+            errln('Exception mesage: {}'.format(err))
+            sys.exit(1)
+
+    # done:
+    sys.exit(0)
 
 
 if __name__ == '__main__':
