@@ -11,6 +11,7 @@ CHANGELOG
 
       Some windows terminals (e.g. mintty) work with '--ansi-colors', but
       break with '--colorama'. Likewise, cmd.exe or Console2 work with '--colorama'.
+      On linux, both options work fine.
 
     - OMDB search is now opt-in and uses https instead of http.
 
