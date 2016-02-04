@@ -1,6 +1,19 @@
 
 CHANGELOG
 
+* 2016/02/04:
+
+    - Working on Python 3.5.0, colorama 0.3.6.
+
+    - Huge refactoring.
+
+    - Color support is now opt-in. Use one of '--colorama' or '--ansi-colors'.
+
+      Some windows terminals (e.g. MinTTY) work with '--ansi-colors', but
+      break with '--colorama'. Likewise, cmd.exe or Console2 work with '--colorama'.
+
+    - OMDB search is now opt-in.
+
 * 2015/08/24:
 
     - Added local and OMDB suggestions in challenge mode when the
