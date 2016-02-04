@@ -519,7 +519,7 @@ def make_parser():
         description = __doc__,
         formatter_class = RawDescriptionHelpFormatter,
         epilog = 'example: MovieWar.py Malu Beluki',
-        usage  = 'MovieWar.py [option [options ...]] player [player...]',
+        usage  = 'MovieWar.py player [player...] [option [options ...]]'
     )
 
     # required:
