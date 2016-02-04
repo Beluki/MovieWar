@@ -27,8 +27,6 @@ To play just run the script with the player names as arguments:
 $ MovieWar.py Player1 Player2 Player3...
 ```
 
-# Command-line options:
-
 The following options that can be used to change the behavior:
 
 * `--colorama` enables color support on cmd.exe or other windows terminals
