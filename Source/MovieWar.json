@@ -104,6 +104,7 @@
 {"years": ["1966"], "name": "A Funny Thing Happened on the Way to the Forum"}
 {"years": ["1963"], "name": "A Gathering of Eagles"}
 {"years": ["1939"], "name": "A Girl Must Live"}
+{"years": ["1952"], "name": "A Girl in Every Port"}
 {"years": ["1994"], "name": "A Good Man in Africa"}
 {"years": ["1971"], "name": "A Gunfight"}
 {"years": ["1943"], "name": "A Guy Named Joe"}
@@ -168,7 +169,6 @@
 {"years": ["1998"], "name": "A Perfect Murder"}
 {"years": ["1993"], "name": "A Perfect World"}
 {"years": ["1951"], "name": "A Place in the Sun"}
-{"years": ["1945"], "name": "A Place of One's Own"}
 {"years": ["1987"], "name": "A Prayer for the Dying"}
 {"years": ["1984"], "name": "A Private Function"}
 {"years": ["1974"], "name": "A Quiet Day in Belfast"}
@@ -241,6 +241,7 @@
 {"years": ["1953"], "name": "Abbott and Costello Go to Mars"}
 {"years": ["1952"], "name": "Abbott and Costello Meet Captain Kidd"}
 {"years": ["1953"], "name": "Abbott and Costello Meet Dr. Jekyll and Mr. Hyde"}
+{"years": ["1948"], "name": "Abbott and Costello Meet Frankenstein"}
 {"years": ["1951"], "name": "Abbott and Costello Meet the Invisible Man"}
 {"years": ["1955"], "name": "Abbott and Costello Meet the Keystone Kops"}
 {"years": ["1949"], "name": "Abbott and Costello Meet the Killer, Boris Karloff"}
@@ -394,7 +395,6 @@
 {"years": ["1981"], "name": "An Eye for an Eye"}
 {"years": ["1999"], "name": "An Ideal Husband"}
 {"years": ["1989"], "name": "An Innocent Man"}
-{"years": ["1954"], "name": "An Inspector Calls"}
 {"years": ["1982"], "name": "An Officer and a Gentleman"}
 {"years": ["1978"], "name": "An Unmarried Woman"}
 {"years": ["1997"], "name": "Anaconda"}
@@ -804,7 +804,6 @@
 {"years": ["1993"], "name": "Boiling Point"}
 {"years": ["1943"], "name": "Bombardier"}
 {"years": ["1933"], "name": "Bombshell"}
-{"years": ["1997"], "name": "Bongwater"}
 {"years": ["1958"], "name": "Bonjour Tristesse"}
 {"years": ["1967"], "name": "Bonnie and Clyde"}
 {"years": ["1997"], "name": "Boogie Nights"}
@@ -821,7 +820,6 @@
 {"years": ["1950"], "name": "Born to Be Bad"}
 {"years": ["1936"], "name": "Born to Dance"}
 {"years": ["1947"], "name": "Born to Kill"}
-{"years": ["1953"], "name": "Botany Bay"}
 {"years": ["1996"], "name": "Bottle Rocket"}
 {"years": ["1979"], "name": "Boulevard Nights"}
 {"years": ["1976"], "name": "Bound for Glory"}
@@ -870,7 +868,6 @@
 {"years": ["1940"], "name": "Brigham Young"}
 {"years": ["1934"], "name": "Bright Eyes"}
 {"years": ["1950"], "name": "Bright Leaf"}
-{"years": ["1935"], "name": "Bright Lights"}
 {"years": ["1988"], "name": "Bright Lights, Big City"}
 {"years": ["1951"], "name": "Bright Victory"}
 {"years": ["1986"], "name": "Brighton Beach Memoirs"}
@@ -986,7 +983,6 @@
 {"years": ["1948"], "name": "Canon City"}
 {"years": ["1946"], "name": "Canyon Passage"}
 {"years": ["1991"], "name": "Cape Fear"}
-{"years": ["1977"], "name": "Capricorn One"}
 {"years": ["1971"], "name": "Captain Apache"}
 {"years": ["1935"], "name": "Captain Blood"}
 {"years": ["1947"], "name": "Captain Boycott"}
@@ -1127,7 +1123,6 @@
 {"years": ["1968"], "name": "Chitty Chitty Bang Bang"}
 {"years": ["1984"], "name": "Choose Me"}
 {"years": ["1983"], "name": "Christine"}
-{"years": ["1947"], "name": "Christmas Eve"}
 {"years": ["1944"], "name": "Christmas Holiday"}
 {"years": ["1945"], "name": "Christmas in Connecticut"}
 {"years": ["1940"], "name": "Christmas in July"}
@@ -1315,6 +1310,7 @@
 {"years": ["1994"], "name": "Crooklyn"}
 {"years": ["1983"], "name": "Cross Creek"}
 {"years": ["1987"], "name": "Cross My Heart"}
+{"years": ["1977"], "name": "Cross of Iron"}
 {"years": ["1977"], "name": "Crossed Swords"}
 {"years": ["1947"], "name": "Crossfire"}
 {"years": ["1988"], "name": "Crossing Delancey"}
@@ -1629,7 +1625,6 @@
 {"years": ["1947"], "name": "Dual Alibi"}
 {"years": ["1950"], "name": "Duchess of Idaho"}
 {"years": ["1933"], "name": "Duck Soup"}
-{"years": ["1987"], "name": "Dudes"}
 {"years": ["1971"], "name": "Duel"}
 {"years": ["1966"], "name": "Duel at Diablo"}
 {"years": ["1946"], "name": "Duel in the Sun"}
@@ -1768,7 +1763,6 @@
 {"years": ["1968"], "name": "Faces"}
 {"years": ["1980"], "name": "Fade to Black"}
 {"years": ["1966"], "name": "Fahrenheit 451"}
-{"years": ["1964"], "name": "Fail Safe"}
 {"years": ["1953"], "name": "Fair Wind to Java"}
 {"years": ["1997"], "name": "FairyTale: A True Story"}
 {"years": ["1996"], "name": "Faithful"}
@@ -1822,7 +1816,6 @@
 {"years": ["1955"], "name": "Female on the Beach"}
 {"years": ["1986"], "name": "Ferris Bueller's Day Off"}
 {"years": ["1959"], "name": "Ferry to Hong Kong"}
-{"years": ["1948"], "name": "Feudin', Fussin' and A-Fightin'"}
 {"years": ["1999"], "name": "Fever"}
 {"years": ["1971"], "name": "Fiddler on the Roof"}
 {"years": ["1989"], "name": "Field of Dreams"}
@@ -1962,6 +1955,7 @@
 {"years": ["1980"], "name": "Foxes"}
 {"years": ["1974"], "name": "Foxy Brown"}
 {"years": ["1970"], "name": "Fragment of Fear"}
+{"years": ["1947"], "name": "Framed"}
 {"years": ["1982"], "name": "Frances"}
 {"years": ["1950"], "name": "Francis"}
 {"years": ["1953"], "name": "Francis Covers the Big Town"}
@@ -1991,7 +1985,6 @@
 {"years": ["1933"], "name": "Friday the Thirteenth"}
 {"years": ["1991"], "name": "Fried Green Tomatoes"}
 {"years": ["1947"], "name": "Frieda"}
-{"years": ["1956"], "name": "Friendly Persuasion"}
 {"years": ["1931"], "name": "Friends and Lovers"}
 {"years": ["1932"], "name": "Frisco Jenny"}
 {"years": ["1935"], "name": "Frisco Kid"}
@@ -2217,7 +2210,6 @@
 {"years": ["1991"], "name": "Hangin' with the Homeboys"}
 {"years": ["1952"], "name": "Hangman's Knot"}
 {"years": ["1943"], "name": "Hangmen Also Die!"}
-{"years": ["1945"], "name": "Hangover Square"}
 {"years": ["1986"], "name": "Hannah and Her Sisters"}
 {"years": ["1969"], "name": "Hannibal Brooks"}
 {"years": ["1971"], "name": "Hannie Caulder"}
@@ -2258,6 +2250,7 @@
 {"years": ["1986"], "name": "Haunted Honeymoon"}
 {"years": ["1990"], "name": "Havana"}
 {"years": ["1938"], "name": "Having Wonderful Time"}
+{"years": ["1966"], "name": "Hawaii"}
 {"years": ["1980"], "name": "Hawk the Slayer"}
 {"years": ["1988"], "name": "Hawks"}
 {"years": ["1998"], "name": "He Got Game"}
@@ -2381,7 +2374,6 @@
 {"years": ["1941"], "name": "Hold That Ghost"}
 {"years": ["1938"], "name": "Hold That Kiss"}
 {"years": ["1933"], "name": "Hold Your Man"}
-{"years": ["1938"], "name": "Holiday"}
 {"years": ["1949"], "name": "Holiday Affair"}
 {"years": ["1942"], "name": "Holiday Inn"}
 {"years": ["1959"], "name": "Holiday for Lovers"}
@@ -2426,6 +2418,7 @@
 {"years": ["1933"], "name": "Hoop-La"}
 {"years": ["1978"], "name": "Hooper"}
 {"years": ["1986"], "name": "Hoosiers"}
+{"years": ["1935"], "name": "Hop-Along Cassidy"}
 {"years": ["1998"], "name": "Hope Floats"}
 {"years": ["1987"], "name": "Hope and Glory"}
 {"years": ["1980"], "name": "Hopscotch"}
@@ -2685,7 +2678,6 @@
 {"years": ["1939"], "name": "It's a Wonderful World"}
 {"years": ["1945"], "name": "It's in the Bag!"}
 {"years": ["1952"], "name": "Ivanhoe"}
-{"years": ["1947"], "name": "Ivy"}
 {"years": ["1991"], "name": "JFK"}
 {"years": ["1977"], "name": "Jabberwocky"}
 {"years": ["1996"], "name": "Jack"}
@@ -3121,7 +3113,6 @@
 {"years": ["1993"], "name": "M. Butterfly"}
 {"years": ["1970"], "name": "MASH"}
 {"years": ["1949"], "name": "Ma and Pa Kettle"}
-{"years": ["1951"], "name": "Ma and Pa Kettle Back on the Farm"}
 {"years": ["1950"], "name": "Ma and Pa Kettle Go to Town"}
 {"years": ["1954"], "name": "Ma and Pa Kettle at Home"}
 {"years": ["1955"], "name": "Ma and Pa Kettle at Waikiki"}
@@ -3130,7 +3121,6 @@
 {"years": ["1992"], "name": "Mac"}
 {"years": ["1977"], "name": "MacArthur"}
 {"years": ["1952"], "name": "Macao"}
-{"years": ["1971"], "name": "Macbeth"}
 {"years": ["1969"], "name": "Machine Gun McCain"}
 {"years": ["1958"], "name": "Machine-Gun Kelly"}
 {"years": ["1969"], "name": "Mackenna's Gold"}
@@ -3153,7 +3143,6 @@
 {"years": ["1998"], "name": "Madeline"}
 {"years": ["1944"], "name": "Mademoiselle Fifi"}
 {"years": ["1968"], "name": "Madigan"}
-{"years": ["1945"], "name": "Madonna of the Seven Moons"}
 {"years": ["1978"], "name": "Magic"}
 {"years": ["1947"], "name": "Magic Town"}
 {"years": ["1946"], "name": "Magnificent Doll"}
@@ -3567,7 +3556,6 @@
 {"years": ["1950"], "name": "Nancy Goes to Rio"}
 {"years": ["1990"], "name": "Narrow Margin"}
 {"years": ["1975"], "name": "Nashville"}
-{"years": ["1985"], "name": "National Lampoon's European Vacation"}
 {"years": ["1944"], "name": "National Velvet"}
 {"years": ["1986"], "name": "Native Son"}
 {"years": ["1994"], "name": "Natural Born Killers"}
@@ -3842,8 +3830,8 @@
 {"years": ["1963"], "name": "PT 109"}
 {"years": ["1990"], "name": "Pacific Heights"}
 {"years": ["1932"], "name": "Pack Up Your Troubles"}
-{"years": ["1935"], "name": "Paddy O'Day"}
 {"years": ["1935"], "name": "Page Miss Glory"}
+{"years": ["1930"], "name": "Paid"}
 {"years": ["1969"], "name": "Paint Your Wagon"}
 {"years": ["1964"], "name": "Pajama Party"}
 {"years": ["1957"], "name": "Pal Joey"}
@@ -4006,7 +3994,6 @@
 {"years": ["1936"], "name": "Poppy"}
 {"years": ["1959"], "name": "Porgy and Bess"}
 {"years": ["1959"], "name": "Pork Chop Hill"}
-{"years": ["1982"], "name": "Porky's"}
 {"years": ["1949"], "name": "Port of New York"}
 {"years": ["1960"], "name": "Portrait in Black"}
 {"years": ["1955"], "name": "Portrait of Alison"}
@@ -4219,7 +4206,7 @@
 {"years": ["1964"], "name": "Rio Conchos"}
 {"years": ["1950"], "name": "Rio Grande"}
 {"years": ["1970"], "name": "Rio Lobo"}
-{"years": ["1929"], "name": "Rio Rita"}
+{"years": ["1942"], "name": "Rio Rita"}
 {"years": ["1954"], "name": "Riot in Cell Block 11"}
 {"years": ["1971"], "name": "Rip-Off"}
 {"years": ["1993"], "name": "Rising Sun"}
@@ -4361,6 +4348,7 @@
 {"years": ["1960"], "name": "Saturday Night and Sunday Morning"}
 {"years": ["1940"], "name": "Saturday's Children"}
 {"years": ["1951"], "name": "Saturday's Hero"}
+{"years": ["1972"], "name": "Savage Messiah"}
 {"years": ["1963"], "name": "Savage Sam"}
 {"years": ["1984"], "name": "Savage Streets"}
 {"years": ["1973"], "name": "Save the Tiger"}
@@ -4399,7 +4387,6 @@
 {"years": ["1934"], "name": "Search for Beauty"}
 {"years": ["1993"], "name": "Searching for Bobby Fischer"}
 {"years": ["1994"], "name": "Second Best"}
-{"years": ["1953"], "name": "Second Chance"}
 {"years": ["1939"], "name": "Second Fiddle"}
 {"years": ["1966"], "name": "Seconds"}
 {"years": ["1936"], "name": "Secret Agent"}
@@ -4604,6 +4591,7 @@
 {"years": ["1967"], "name": "Smashing Time"}
 {"years": ["1975"], "name": "Smile"}
 {"years": ["1932"], "name": "Smilin' Through"}
+{"years": ["1997"], "name": "Smilla's Sense of Snow"}
 {"years": ["1982"], "name": "Smithereens"}
 {"years": ["1995"], "name": "Smoke"}
 {"years": ["1977"], "name": "Smokey and the Bandit"}
@@ -4647,7 +4635,6 @@
 {"years": ["1952"], "name": "Something for the Birds"}
 {"years": ["1947"], "name": "Something in the Wind"}
 {"years": ["1957"], "name": "Something of Value"}
-{"years": ["1937"], "name": "Something to Sing About"}
 {"years": ["1995"], "name": "Something to Talk About"}
 {"years": ["1970"], "name": "Sometimes a Great Notion"}
 {"years": ["1942"], "name": "Somewhere I'll Find You"}
@@ -4662,6 +4649,7 @@
 {"years": ["1955"], "name": "Son of Sinbad"}
 {"years": ["1933"], "name": "Son of a Sailor"}
 {"years": ["1960"], "name": "Song Without End"}
+{"years": ["1936"], "name": "Song of Freedom"}
 {"years": ["1949"], "name": "Song of India"}
 {"years": ["1947"], "name": "Song of Love"}
 {"years": ["1942"], "name": "Song of the Islands"}
@@ -4680,6 +4668,7 @@
 {"years": ["1988"], "name": "Soursweet"}
 {"years": ["1992"], "name": "South Central"}
 {"years": ["1958"], "name": "South Pacific"}
+{"years": ["1938"], "name": "South Riding"}
 {"years": ["1953"], "name": "South Sea Woman"}
 {"years": ["1981"], "name": "Southern Comfort"}
 {"years": ["1973"], "name": "Soylent Green"}
@@ -4904,7 +4893,6 @@
 {"years": ["1992"], "name": "Swoon"}
 {"years": ["1935"], "name": "Sylvia Scarlett"}
 {"years": ["1932"], "name": "Symphony of Six Million"}
-{"years": ["1942"], "name": "Syncopation"}
 {"years": ["1947"], "name": "T-Men"}
 {"years": ["1971"], "name": "T.R. Baskin"}
 {"years": ["1971"], "name": "THX 1138"}
@@ -4971,6 +4959,7 @@
 {"years": ["1970"], "name": "Tell Me That You Love Me, Junie Moon"}
 {"years": ["1969"], "name": "Tell Them Willie Boy Is Here"}
 {"years": ["1982"], "name": "Tempest"}
+{"years": ["1965"], "name": "Ten Little Indians"}
 {"years": ["1958"], "name": "Ten North Frederick"}
 {"years": ["1959"], "name": "Ten Seconds to Hell"}
 {"years": ["1951"], "name": "Ten Tall Men"}
@@ -5080,6 +5069,7 @@
 {"years": ["1965"], "name": "The Amorous Adventures of Moll Flanders"}
 {"years": ["1971"], "name": "The Anderson Tapes"}
 {"years": ["1971"], "name": "The Andromeda Strain"}
+{"years": ["1985"], "name": "The Angelic Conversation"}
 {"years": ["1959"], "name": "The Angry Hills"}
 {"years": ["1959"], "name": "The Angry Red Planet"}
 {"years": ["1960"], "name": "The Angry Silence"}
@@ -5340,11 +5330,11 @@
 {"years": ["1965"], "name": "The Cincinnati Kid"}
 {"years": ["1938"], "name": "The Citadel"}
 {"years": ["1960"], "name": "The City of the Dead"}
+{"years": ["1935"], "name": "The Clairvoyant"}
 {"years": ["1949"], "name": "The Clay Pigeon"}
 {"years": ["1994"], "name": "The Client"}
 {"years": ["1944"], "name": "The Climax"}
 {"years": ["1945"], "name": "The Clock"}
-{"years": ["1980"], "name": "The Club"}
 {"years": ["1955"], "name": "The Cobweb"}
 {"years": ["1985"], "name": "The Coca-Cola Kid"}
 {"years": ["1946"], "name": "The Cockeyed Miracle"}
@@ -5353,7 +5343,6 @@
 {"years": ["1985"], "name": "The Color Purple"}
 {"years": ["1986"], "name": "The Color of Money"}
 {"years": ["1961"], "name": "The Comancheros"}
-{"years": ["1967"], "name": "The Comedians"}
 {"years": ["1963"], "name": "The Comedy of Terrors"}
 {"years": ["1990"], "name": "The Comfort of Strangers"}
 {"years": ["1969"], "name": "The Comic"}
@@ -5381,6 +5370,7 @@
 {"years": ["1994"], "name": "The Cowboy Way"}
 {"years": ["1938"], "name": "The Cowboy and the Lady"}
 {"years": ["1972"], "name": "The Cowboys"}
+{"years": ["1932"], "name": "The Crash"}
 {"years": ["1937"], "name": "The Crime Nobody Saw"}
 {"years": ["1936"], "name": "The Crimes of Stephen Hawke"}
 {"years": ["1931"], "name": "The Criminal Code"}
@@ -5725,6 +5715,7 @@
 {"years": ["1952"], "name": "The Greatest Show on Earth"}
 {"years": ["1965"], "name": "The Greatest Story Ever Told"}
 {"years": ["1968"], "name": "The Green Berets"}
+{"years": ["1952"], "name": "The Green Glove"}
 {"years": ["1956"], "name": "The Green Man"}
 {"years": ["1999"], "name": "The Green Mile"}
 {"years": ["1936"], "name": "The Green Pastures"}
@@ -5948,6 +5939,7 @@
 {"years": ["1956"], "name": "The Last Wagon"}
 {"years": ["1929"], "name": "The Last Warning"}
 {"years": ["1977"], "name": "The Last Wave"}
+{"years": ["1987"], "name": "The Last of England"}
 {"years": ["1937"], "name": "The Last of Mrs. Cheyney"}
 {"years": ["1973"], "name": "The Last of Sheila"}
 {"years": ["1990"], "name": "The Last of the Finest"}
@@ -5996,7 +5988,6 @@
 {"years": ["1976"], "name": "The Little Girl Who Lives Down the Lane"}
 {"years": ["1953"], "name": "The Little Kidnappers"}
 {"years": ["1934"], "name": "The Little Minister"}
-{"years": ["1974"], "name": "The Little Prince"}
 {"years": ["1939"], "name": "The Little Princess"}
 {"years": ["1994"], "name": "The Little Rascals"}
 {"years": ["1960"], "name": "The Little Shop of Horrors"}
@@ -6025,6 +6016,7 @@
 {"years": ["1953"], "name": "The Long, Long Trailer"}
 {"years": ["1962"], "name": "The Longest Day"}
 {"years": ["1983"], "name": "The Lords of Discipline"}
+{"years": ["1974"], "name": "The Lords of Flatbush"}
 {"years": ["1999"], "name": "The Loss of Sexual Innocence"}
 {"years": ["1987"], "name": "The Lost Boys"}
 {"years": ["1947"], "name": "The Lost Moment"}
@@ -6122,8 +6114,8 @@
 {"years": ["1954"], "name": "The Men of Sherwood Forest"}
 {"years": ["1932"], "name": "The Menace"}
 {"years": ["1971"], "name": "The Mephisto Waltz"}
+{"years": ["1968"], "name": "The Mercenary"}
 {"years": ["1934"], "name": "The Merry Widow"}
-{"years": ["1977"], "name": "The Message"}
 {"years": ["1999"], "name": "The Messenger: The Story of Joan of Arc"}
 {"years": ["1993"], "name": "The Meteor Man"}
 {"years": ["1957"], "name": "The Midnight Story"}
@@ -6163,7 +6155,6 @@
 {"years": ["1959"], "name": "The Monster of Piedras Blancas"}
 {"years": ["1953"], "name": "The Moon Is Blue"}
 {"years": ["1943"], "name": "The Moon Is Down"}
-{"years": ["1942"], "name": "The Moon and Sixpence"}
 {"years": ["1936"], "name": "The Moon's Our Home"}
 {"years": ["1964"], "name": "The Moon-Spinners"}
 {"years": ["1970"], "name": "The Moonshine War"}
@@ -6218,7 +6209,6 @@
 {"years": ["1950"], "name": "The Next Voice You Hear..."}
 {"years": ["1942"], "name": "The Next of Kin"}
 {"years": ["1974"], "name": "The Nickel Ride"}
-{"years": ["1988"], "name": "The Night Before"}
 {"years": ["1955"], "name": "The Night My Number Came Up"}
 {"years": ["1974"], "name": "The Night Porter"}
 {"years": ["1968"], "name": "The Night They Raided Minsky's"}
@@ -6263,7 +6253,6 @@
 {"years": ["1975"], "name": "The Other Side of the Mountain"}
 {"years": ["1999"], "name": "The Other Sister"}
 {"years": ["1999"], "name": "The Out-of-Towners"}
-{"years": ["1952"], "name": "The Outcasts of Poker Flat"}
 {"years": ["1973"], "name": "The Outfit"}
 {"years": ["1943"], "name": "The Outlaw"}
 {"years": ["1976"], "name": "The Outlaw Josey Wales"}
@@ -6301,7 +6290,6 @@
 {"years": ["1993"], "name": "The Pelican Brief"}
 {"years": ["1951"], "name": "The People Against O'Hara"}
 {"years": ["1977"], "name": "The People That Time Forgot"}
-{"years": ["1941"], "name": "The People vs. Dr. Kildare"}
 {"years": ["1996"], "name": "The People vs. Larry Flynt"}
 {"years": ["1995"], "name": "The Perez Family"}
 {"years": ["1958"], "name": "The Perfect Furlough"}
@@ -6345,7 +6333,6 @@
 {"years": ["1942"], "name": "The Pride of the Yankees"}
 {"years": ["1941"], "name": "The Prime Minister"}
 {"years": ["1969"], "name": "The Prime of Miss Jean Brodie"}
-{"years": ["1937"], "name": "The Prince and the Pauper"}
 {"years": ["1957"], "name": "The Prince and the Showgirl"}
 {"years": ["1991"], "name": "The Prince of Tides"}
 {"years": ["1987"], "name": "The Princess Bride"}
@@ -6559,7 +6546,6 @@
 {"years": ["1932"], "name": "The Sign of the Cross"}
 {"years": ["1948"], "name": "The Sign of the Ram"}
 {"years": ["1991"], "name": "The Silence of the Lambs"}
-{"years": ["1958"], "name": "The Silent Enemy"}
 {"years": ["1954"], "name": "The Silver Chalice"}
 {"years": ["1933"], "name": "The Silver Cord"}
 {"years": ["1943"], "name": "The Silver Fleet"}
@@ -6582,7 +6568,6 @@
 {"years": ["1931"], "name": "The Smiling Lieutenant"}
 {"years": ["1948"], "name": "The Snake Pit"}
 {"years": ["1958"], "name": "The Snorkel"}
-{"years": ["1952"], "name": "The Snows of Kilimanjaro"}
 {"years": ["1956"], "name": "The Solid Gold Cadillac"}
 {"years": ["1940"], "name": "The Son of Monte Cristo"}
 {"years": ["1943"], "name": "The Song of Bernadette"}
@@ -6619,7 +6604,6 @@
 {"years": ["1973"], "name": "The Sting"}
 {"years": ["1984"], "name": "The Stone Boy"}
 {"years": ["1973"], "name": "The Stone Killer"}
-{"years": ["1952"], "name": "The Stooge"}
 {"years": ["1945"], "name": "The Stork Club"}
 {"years": ["1939"], "name": "The Story of Alexander Graham Bell"}
 {"years": ["1944"], "name": "The Story of Dr. Wassell"}
@@ -6774,8 +6758,8 @@
 {"years": ["1963"], "name": "The Victors"}
 {"years": ["1955"], "name": "The View from Pompey's Head"}
 {"years": ["1958"], "name": "The Vikings"}
+{"years": ["1979"], "name": "The Villain"}
 {"years": ["1955"], "name": "The Violent Men"}
-{"years": ["1955"], "name": "The Virgin Queen"}
 {"years": ["1999"], "name": "The Virgin Suicides"}
 {"years": ["1970"], "name": "The Virgin and the Gypsy"}
 {"years": ["1947"], "name": "The Voice of the Turtle"}
@@ -7164,6 +7148,7 @@
 {"years": ["1946"], "name": "Two Guys from Milwaukee"}
 {"years": ["1999"], "name": "Two Hands"}
 {"years": ["1996"], "name": "Two If by Sea"}
+{"years": ["1996"], "name": "Two Much"}
 {"years": ["1970"], "name": "Two Mules for Sister Sara"}
 {"years": ["1961"], "name": "Two Rode Together"}
 {"years": ["1932"], "name": "Two Seconds"}
@@ -7375,7 +7360,6 @@
 {"years": ["1952"], "name": "What Price Glory"}
 {"years": ["1932"], "name": "What Price Hollywood?"}
 {"years": ["1964"], "name": "What a Way to Go!"}
-{"years": ["1933"], "name": "What! No Beer?"}
 {"years": ["1993"], "name": "What's Eating Gilbert Grape"}
 {"years": ["1993"], "name": "What's Love Got to Do with It"}
 {"years": ["1972"], "name": "What's Up, Doc?"}
@@ -7384,7 +7368,6 @@
 {"years": ["1971"], "name": "When Eight Bells Toll"}
 {"years": ["1989"], "name": "When Harry Met Sally..."}
 {"years": ["1941"], "name": "When Ladies Meet"}
-{"years": ["1937"], "name": "When Love Is Young"}
 {"years": ["1948"], "name": "When My Baby Smiles at Me"}
 {"years": ["1996"], "name": "When Saturday Comes"}
 {"years": ["1944"], "name": "When Strangers Marry"}
@@ -7498,6 +7481,7 @@
 {"years": ["1990"], "name": "Wings of Fame"}
 {"years": ["1932"], "name": "Winner Take All"}
 {"years": ["1969"], "name": "Winning"}
+{"years": ["1975"], "name": "Winstanley"}
 {"years": ["1979"], "name": "Winter Kills"}
 {"years": ["1981"], "name": "Winter of Our Dreams"}
 {"years": ["1975"], "name": "Winterhawk"}
@@ -7542,6 +7526,7 @@
 {"years": ["1998"], "name": "Wrongfully Accused"}
 {"years": ["1939"], "name": "Wuthering Heights"}
 {"years": ["1994"], "name": "Wyatt Earp"}
+{"years": ["1956"], "name": "X the Unknown"}
 {"years": ["1952"], "name": "Yankee Buccaneer"}
 {"years": ["1942"], "name": "Yankee Doodle Dandy"}
 {"years": ["1979"], "name": "Yanks"}

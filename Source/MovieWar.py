@@ -655,7 +655,7 @@ def main():
 
         except Exception as err:
             errln('Unable to save the movies file at: {}'.format(options.filepath))
-            errln('Exception mesage: {}'.format(err))
+            errln('Exception message: {}'.format(err))
             sys.exit(1)
 
     # done:
