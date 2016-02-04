@@ -78,12 +78,13 @@ release date to the guess.
 
 ## Notes on the movies database
 
-The MovieWar.json file was generated using [MovieWarDBGen][].
+The [MovieWar.json][] file was generated using [MovieWarDBGen][].
 It contains 7600 movies.
 
 All the release dates were verified using two sources: [Freebase][] and [OMDB][].
 The movies that didn't match exactly on title and release date were discarded.
 
+[MovieWar.json]: Source/MovieWar.json
 [MovieWarDBGen]: https://github.com/Beluki/MovieWarDBGen
 [Freebase]: https://www.freebase.com
 [OMDB]: http://www.omdbapi.com
